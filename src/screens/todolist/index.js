@@ -148,7 +148,7 @@ class TodoList extends Component {
                   data={state.tableHead}
                   widthArr={state.widthArr}
                   style={styles.header}
-                  textStyle={styles.text}
+                  textStyle={styles.haderText}
                 />
               </Table>
               <ScrollView style={styles.dataWrapper}>
@@ -178,7 +178,16 @@ class TodoList extends Component {
 const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: '#fff'},
   header: {height: 50, backgroundColor: '#537791'},
-  text: {textAlign: 'center', fontWeight: '100', flexWrap: 'wrap'},
+  haderText: {
+    textAlign: 'center',
+    flexWrap: 'wrap',
+    color: theme.colors.white,
+  },
+  text: {
+    textAlign: 'center',
+    flexWrap: 'wrap',
+    color: theme.colors.textColor,
+  },
   dataWrapper: {marginTop: -1},
   row: {minHeight: 40, backgroundColor: '#E7E6E1'},
 });
