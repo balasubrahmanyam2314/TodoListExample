@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Alert, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  StatusBar,
+  BackHandler,
+  Alert,
+} from 'react-native';
 import {Table, Row} from 'react-native-table-component';
 import {Icon} from 'react-native-elements';
 import {theme} from '../../theme';
@@ -86,12 +93,43 @@ class TodoList extends Component {
     clickOnAdd && clickOnAdd();
   };
 
+  backAction = () => {
+    Alert.alert('Hold on!', 'Are you sure you want to close App?', [
+      {
+        text: 'Cancel',
+        onPress: () => null,
+        style: 'cancel',
+      },
+      {text: 'YES', onPress: () => BackHandler.exitApp()},
+    ]);
+    return true;
+  };
+
+  componentDidMount() {
+    this.backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      this.backAction,
+    );
+  }
+
+  componentWillUnmount() {
+    this.backHandler.remove();
+  }
+
   render() {
     const state = this.state;
     return (
       <SafeAreaView style={styles.container}>
+        <StatusBar
+          barStyle={'light-content'}
+          backgroundColor={theme.colors.primary}
+          translucent={false}
+          hidden={false}
+          animated
+        />
         <Header
           title="Todo List"
+          containerStyle={{marginBottom: 12}}
           rightIcon={
             <Icon
               size={24}
@@ -138,7 +176,7 @@ class TodoList extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {flex: 1, paddingTop: 30, backgroundColor: '#fff'},
+  container: {flex: 1, backgroundColor: '#fff'},
   header: {height: 50, backgroundColor: '#537791'},
   text: {textAlign: 'center', fontWeight: '100', flexWrap: 'wrap'},
   dataWrapper: {marginTop: -1},

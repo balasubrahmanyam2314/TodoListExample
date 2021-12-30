@@ -7,6 +7,8 @@ import {
   ScrollView,
   Platform,
   TouchableOpacity,
+  BackHandler,
+  Alert,
 } from 'react-native';
 import {styles} from './styles';
 import {Button, Icon} from 'react-native-elements';
@@ -160,6 +162,29 @@ class TodoAdd extends Component {
     this.formikRef?.current?.setFieldValue('checked', item?.title);
   };
 
+  backAction = () => {
+    Alert.alert('Hold on!', 'Are you sure you want to go back?', [
+      {
+        text: 'Cancel',
+        onPress: () => null,
+        style: 'cancel',
+      },
+      {text: 'YES', onPress: () => this.clickOnBack()},
+    ]);
+    return true;
+  };
+
+  componentDidMount() {
+    this.backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      this.backAction,
+    );
+  }
+
+  componentWillUnmount() {
+    this.backHandler.remove();
+  }
+
   render() {
     const {startDate, endDate} = this.state;
     const {todoData} = this.props;
@@ -184,7 +209,7 @@ class TodoAdd extends Component {
                 name="chevron-left"
                 type="font-awesome"
                 color={theme.colors.black}
-                onPress={this.clickOnBack}
+                onPress={this.backAction}
               />
             }
           />
